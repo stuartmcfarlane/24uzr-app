@@ -1,0 +1,70 @@
+{
+  "name": "cleverstack-node-seed",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "start": "grunt",
+    "setup": "npm i; grunt db;"
+  },
+  "dependencies": {
+    "async": "",
+    "clever-controller": "",
+    "connect-redis": "~1.4.5",
+    "dehumanize-date": "",
+    "ejs": "",
+    "express": "",
+    "i": "",
+    "i18n": "",
+    "jasmine-node": "",
+    "memcached": "",
+    "moment": "",
+    "mysql": "*",
+    "nconf": "",
+    "passport": "*",
+    "passport-facebook": "",
+    "passport-local": "*",
+    "pg": "",
+    "q": "",
+    "sequelize": "",
+    "squel": "",
+    "supervisor": "",
+    "time": "",
+    "uberclass": "",
+    "underscore": "",
+    "vague-time": "~0.5.4",
+    "validator": "",
+    "matchdep": "~0.1.2",
+    "colors": "~0.6.1"
+  },
+  "author": {
+    "name": "Richard Gustin",
+    "email": "richard@clevertech.biz"
+  },
+  "collaborators": [
+    "Leandro Ostera <leandro@clevertech.biz>",
+    "Dmitry Bashkatov <dmitry@clevertech.biz>"
+  ],
+  "description": "",
+  "keywords": [
+    ""
+  ],
+  "main": "app.js",
+  "devDependencies": {
+    "docular": "git://github.com/leostera/docular.git",
+    "grunt-contrib-watch": "",
+    "grunt-contrib-clean": "",
+    "grunt-contrib-jshint": "",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-mocha-test": "",
+    "grunt-nodemon": "",
+    "grunt-docular": "",
+    "matchdep": "",
+    "mocha": "",
+    "should": "",
+    "sinon": "",
+    "karma": "",
+    "supertest": "",
+    "grunt-concurrent": "~0.3.0",
+    "grunt-exec": "~0.4.2"
+  }
+}
