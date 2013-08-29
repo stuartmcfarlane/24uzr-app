@@ -13,5 +13,5 @@ module.exports = function(db, models) {
     });
 
     UserService.Model = models.User;
-    return new UserService(db);t
+    return new UserService(db);
 };

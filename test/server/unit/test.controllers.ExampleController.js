@@ -15,7 +15,7 @@ describe('controllers.ExampleController', function () {
                 json: function () {}
             };
             var next = function () {};
-            ctrl = new ExampleController('fakeAction', req, res, next);
+            ctrl = new ExampleController(req, res, next);
 
             done();
         });
@@ -26,7 +26,7 @@ describe('controllers.ExampleController', function () {
         it('should call .send() with valid status', function (done) {
             ctrl.send = function (data) {
                 data.should.eql({
-                    status: 'Created record!' 
+                    status: 'Created record!'
                 });
                 done();
             };

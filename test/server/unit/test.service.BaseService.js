@@ -141,7 +141,6 @@ describe('service.BaseService', function () {
         it('should update Model instance by id with data', function (done) {
             var data = {
                 name: 'Joe',
-                bookingStyle: 'slots'
             };
             Model.create(data)
             .success(function (obj) {
@@ -166,7 +165,6 @@ describe('service.BaseService', function () {
         it('should mark Model instance as deleted by id', function (done) {
             var data = {
                 name: 'Joe',
-                bookingStyle: 'slots'
             };
             Model.create(data)
             .success(function (obj) {

@@ -34,7 +34,9 @@
     "vague-time": "~0.5.4",
     "validator": "",
     "matchdep": "~0.1.2",
-    "colors": "~0.6.1"
+    "colors": "~0.6.1",
+    "mongoose": "~3.6.18",
+    "baucis": "~0.6.11"
   },
   "author": {
     "name": "Richard Gustin",

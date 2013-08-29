@@ -20,10 +20,9 @@ describe('controllers.UserController', function () {
                 json: function () {}
             };
             var next = function () {};
-            ctrl = new UserController('fakeAction', req, res, next);
-
+            ctrl = new UserController(req, res, next);
             UserService.create({
-                firstName: 'Joe',
+                // firstName: 'Joe',
                 username: 'joe@example.com',
                 email: 'joe@example.com',
                 password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220'
@@ -31,14 +30,14 @@ describe('controllers.UserController', function () {
             .then(function (user) {
                 users.push(user); 
                 return UserService.create({
-                    firstName: 'Rachel',
+                    // firstName: 'Rachel',
                     username: 'rachel@example.com',
                     email: 'rachel@example.com',
                     password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220'
                 });
             })
             .then(function (user) {
-                users.push(user); 
+                users.push(user);
                 done();
             })
             .fail(done);
@@ -139,7 +138,6 @@ describe('controllers.UserController', function () {
 
         it('should call .send() with new user', function (done) {
             ctrl.send = function (result) {
-                console.log(result);
                 result.username.should.equal('admin');
                 result.id.should.be.ok;
                 result.password.should.equal('2394a9661a9089208c1c9c65ccac85a91da6a859');
@@ -208,10 +206,13 @@ describe('controllers.UserController', function () {
         });
 
         it('should call .send(200) if user if such credentials found', function (done) {
-            ctrl.req.login = function () {};
-            ctrl.res.send = function (code) {
+            ctrl.req.login = function testLogin(user, cb) { cb() };
+            ctrl.res.send = function testSend(code) {
                 code.should.equal(200);
                 done();
+            };
+            ctrl.res.json = function testJson(user) {
+                this.send(200, user);
             };
             ctrl.req.body = {
                 username: users[0].username,
@@ -224,6 +225,9 @@ describe('controllers.UserController', function () {
             ctrl.res.send = function (code) {
                 code.should.equal(403);
                 done();
+            };
+            ctrl.res.json = function testJson(code) {
+                this.send(code);
             };
             ctrl.req.body = {
                 username: users[0].username,
