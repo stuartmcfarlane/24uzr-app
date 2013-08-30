@@ -32,11 +32,17 @@ describe('api.v1.bouy', function () {
     describe('baucis api', function() {
         var added;
         it('should respond to post bouy with 201', function(done) {
-            request.post('http://localhost:8080/api/v1/bouies', {
-                name:'test-a',
-                location: {x: 0, y: 0}
-            }, function(err, response, body) {
-                bouy = JSON.parse(body);
+            request({
+                url: 'http://localhost:8080/api/v1/bouies',
+                method: 'POST',
+                // headers: {
+                //     'Accept': 'application/json'
+                // },
+                json: {
+                    name:'test-a',
+                    location: {x: 0, y: 0}
+                }
+            }, function(err, response, bouy) {
                 added = bouy;
                 response.statusCode.should.equal(201);
                 done();
@@ -44,10 +50,8 @@ describe('api.v1.bouy', function () {
         });   
 
         it('should respond to get bouy with 200', function(done) {
-            request.get('http://localhost:8080/api/v1/bouies/' + added._id, function(err, response, body) {
+            request.get('http://localhost:8080/api/v1/bouies/' + added._id, function(err, response, bouy) {
                 response.statusCode.should.equal(200);
-                var bouy = JSON.parse(body);
-                console.log(bouy);
                 done();
             });
         });   
@@ -69,7 +73,7 @@ describe('api.v1.bouy', function () {
 
         it('should respond to get bouy with 404 after it is deleted', function(done) {
             request.get('http://localhost:8080/api/v1/bouies/' + added._id, function(err, response) {
-                response.statusCode.should.equal(200);
+                response.statusCode.should.equal(404);
                 done();
             });
         });   
