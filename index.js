@@ -4,7 +4,7 @@ var config = require( './config' )
   , webPort = process.env.NODE_WWW_PORT || config.webPort || 8080
   , env = process.env.NODE_ENV || config.environmentName || 'development'
   , initializeRoutes = require( './routes' )
-  , initializeApi = require( './api' )
+  , initializeApi = require( './src/api' )
   , loader = require( './src/components/Loader.js' )
   , Sequelize = require( 'sequelize' )
   , Injector = require( './src/utils/injector' )
@@ -100,13 +100,12 @@ app.configure( function() {
 
 // register application routes
 initializeRoutes( app );
+initializeApi( app );
 
 module.exports = app;
 
-initializeApi( app, function initiapizeApi(err) {
-  // if (require.main == module) {
-      app.listen(webPort, function() {
-          console.log("Starting server on port " + webPort + " in " + config.environmentName + " mode");
-      });
-  // }
-});
+// if (require.main == module) {
+    app.listen(webPort, function() {
+        console.log("Starting server on port " + webPort + " in " + config.environmentName + " mode");
+    });
+// }

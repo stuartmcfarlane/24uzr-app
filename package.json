@@ -35,7 +35,7 @@
     "validator": "",
     "matchdep": "~0.1.2",
     "colors": "~0.6.1",
-    "mongoose": "~3.6.18",
+    "mongoose": "~3",
     "baucis": "~0.6.11"
   },
   "author": {
@@ -67,6 +67,7 @@
     "karma": "",
     "supertest": "",
     "grunt-concurrent": "~0.3.0",
-    "grunt-exec": "~0.4.2"
+    "grunt-exec": "~0.4.2",
+    "request": "~2.27.0"
   }
 }
