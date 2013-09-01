@@ -2,22 +2,28 @@ var express = require('express');
 var mongoose = require('mongoose');
 var baucis = require('baucis');
 var bouy = require('./models/bouy');
+var leg = require('./models/leg');
 
 module.exports = function(app) {
+
+    function registerModel(model, name) {
+        var Model = new mongoose.Schema(model);
+        // Register the schema
+        mongoose.model(name, Model);
+        // Create the API routes
+        Model.pre('save', function (next) {
+            console.log('A ' + model + ' was saved to Mongo: %s.', this.get('name'));
+            next();
+        });
+        baucis.rest(name);
+    };
 
     // Connect to the Mongo instance
     mongoose.connect('mongodb://localhost/24uzr');
 
-    var Bouy = new mongoose.Schema(bouy);
-    Bouy.pre('save', function (next) {
-        console.log('A bouy was saved to Mongo: %s.', this.get('name'));
-        next();
-    });
-    // Register the schema
-    mongoose.model('bouy', Bouy);
+    registerModel(bouy, 'bouy');
+    registerModel(leg, 'leg');
 
-    // Create the API routes
-    baucis.rest('bouy');
     app.use('/api/v1', baucis());
 
     console.info('serving /api/v1');
