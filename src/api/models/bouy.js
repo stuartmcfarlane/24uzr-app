@@ -2,7 +2,7 @@
 module.exports = {
     name: String,
     location: {
-        x: Number,
-        y: Number
+        lat: Number,
+        lon: Number
     }
 };
