@@ -17,7 +17,9 @@ if ( cluster.isMaster ) {
         function setupBackgroundTasks() {
             console.log('Setup background tasks...');
 
-            backgroundTasks = cp.fork('./bin/backgroundTasks.js');
+            backgroundTasks = cp.fork('./bin/backgroundTasks.js', [], {
+                env: process.env
+            });
             backgroundTasks.on('exit', setupBackgroundTasks);
         }
         setupBackgroundTasks();

@@ -17,7 +17,7 @@ module.exports = function(app) {
             next();
         });
         baucis.rest(name);
-    };
+    }
 
     // Connect to the Mongo instance
     mongoose.connect('mongodb://localhost/24uzr');
