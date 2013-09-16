@@ -1,9 +1,0 @@
-{
-    "models": [
-        "User"
-    ],
-
-    "modelAssociations": {
-        "User": {}
-    }
-}

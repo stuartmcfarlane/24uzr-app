@@ -1,5 +1,5 @@
 var secretPath = __dirname + '/../../24uzr-config/24uzr-app';
-var files = [ __dirname + '/global.json', __dirname + '/orm.json' ]
+var files = [ secretPath + '/global.json', secretPath + '/orm.json' ]
   , fs = require( 'fs' )
   , envConfigOverride = secretPath + '/' + (process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'local') + '.json';
 
