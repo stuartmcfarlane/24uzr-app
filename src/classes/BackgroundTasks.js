@@ -111,7 +111,7 @@ module.exports = Class.extend(
     },
 
     runMasterTasksComplete: function( err ) {
-        console.log( 'runMasterTasksComplete', err );
+        console.log( 'runMasterTasksComplete ', err ? err : 'without error' );
         if ( err ) {
             console.dir(err.stack);
         }
