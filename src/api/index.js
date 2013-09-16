@@ -16,6 +16,7 @@ module.exports = function(app) {
             console.log('A ' + model + ' was saved to Mongo: %s.', this.get('name'));
             next();
         });
+        console.info('Adding REST api for ' + name);
         baucis.rest(name);
     }
 
