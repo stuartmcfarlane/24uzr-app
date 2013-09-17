@@ -17,7 +17,7 @@ var sequelize = new Sequelize(
 // Get our models
 var models = require('./../src/model')(sequelize, config);
 
-var seedData = require('./../schema/seedData.json');
+var seedData = require('../../24uzr-config/24uzr-app/db/seedData.json');
 
 var assocMap = {};
 Object.keys(seedData).forEach(function (modelName) {
