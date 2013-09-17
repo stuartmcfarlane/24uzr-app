@@ -1,25 +1,25 @@
 // Get everything ready
-var config = require( './config' )
-  , express = require( 'express' )
-  , webPort = process.env.NODE_WWW_PORT || config.webPort || 8080
-  , env = process.env.NODE_ENV || config.environmentName || 'development'
-  , initializeRoutes = require( './routes' )
-  , initializeApi = require( './src/api' )
-  , loader = require( './src/components/Loader.js' )
-  , Sequelize = require( 'sequelize' )
-  , Injector = require( './src/utils/injector' )
-  , passport = require( 'passport' )
-  , app = express();
+var config = require( './config' );
+var express = require( 'express' );
+var webPort = process.env.NODE_WWW_PORT || config.webPort || 8080;
+var env = process.env.NODE_ENV || config.environmentName || 'development';
+var initializeRoutes = require( './routes' );
+var initializeApi = require( './src/api' );
+var loader = require( './src/components/Loader.js' );
+var Sequelize = require( 'sequelize' );
+var Injector = require( './src/utils/injector' );
+var passport = require( 'passport' );
+var app = express();
 
 var RedisStore = require( 'connect-redis' )( express );
 
 // Setup ORM
 var sequelize = new Sequelize(
-    config.db.database, 
-    config.db.username, 
-    config.db.password,
-    config.db.options
-);
+  config.db.database,
+  config.db.username,
+  config.db.password,
+  config.db.options
+  );
 
 // Get our models
 // Note from richard: We have to do this for now, otherwise we cannot access other models inside a model
@@ -44,14 +44,14 @@ app.configure( function() {
     // session management
     app.use( express.cookieParser() );
     app.use( express.session({
-        secret: config.secretKey
-      , cookie: { secure: false, maxAge: 86400000 }
-      , store: new RedisStore({
-          host: config.redis.host
-        , port: config.redis.port
-        , prefix: config.redis.prefix+process.env.NODE_ENV+"_"
-        , password: config.redis.key
-        })
+      secret: config.secretKey,
+      cookie: { secure: false, maxAge: 86400000 },
+      store: new RedisStore({
+        host: config.redis.host,
+        port: config.redis.port,
+        prefix: config.redis.prefix+process.env.NODE_ENV+"_",
+        password: config.redis.key
+      })
     }));
 
     // Enable CORS
@@ -83,18 +83,18 @@ app.configure( function() {
     app.set( 'views', __dirname + '/src/views' );
     app.set( 'view engine', 'ejs' );
     app.set( 'view options', {
-        layout: false
+      layout: false
     });
 
     // error handler, outputs json since that's usually
     // what comes out of this thing
     app.use(function( err, req, res, next ) {
-        console.log('Express error catch', err);
-        res.json(500, {
-            error: err.toString()
-        });
+      console.log('Express error catch', err);
+      res.json(500, {
+        error: err.toString()
+      });
     });
-});
+  });
 
 //
 
@@ -105,7 +105,7 @@ initializeApi( app );
 module.exports = app;
 
 // if (require.main == module) {
-    app.listen(webPort, function() {
-        console.log("Starting server on port " + webPort + " in " + config.environmentName + " mode");
-    });
+  app.listen(webPort, function() {
+    console.log("Starting server on port " + webPort + " in " + config.environmentName + " mode");
+  });
 // }
