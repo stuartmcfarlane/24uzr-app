@@ -30,6 +30,7 @@ module.exports = function(UserService) {
         service: UserService,
 
         requiresLogin: function(req, res, next) {
+            console.log('logged in?');
             if (!req.isAuthenticated())
                 return res.send(401);
             next();
@@ -37,6 +38,7 @@ module.exports = function(UserService) {
 
         requiresRole: function(roleName) {
             return function(req, res, next) {
+                console.log('has role ' + roleName + '?');
                 if (!req.isAuthenticated() ||
                     !req.session.user.roles ||
                     req.session.user.roles.indexOf(roleName) === -1)

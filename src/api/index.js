@@ -5,9 +5,11 @@ var bouy = require('./models/bouy');
 var leg = require('./models/leg');
 var ship = require('./models/ship');
 
+var API_BASE = '/api/v1';
+
 module.exports = function(app) {
 
-    function registerModel(model, name) {
+    function registerModel(model, name,  middleware) {
         var Model = new mongoose.Schema(model);
         // Register the schema
         mongoose.model(name, Model);
@@ -17,17 +19,40 @@ module.exports = function(app) {
             next();
         });
         console.info('Adding REST api for ' + name);
-        baucis.rest(name);
+        baucis
+        .rest(name)
+        .use(middleware);
+
+        console.log('middleware', middleware);
     }
 
-    // Connect to the Mongo instance
-    mongoose.connect('mongodb://localhost/24uzr');
+    var injector = app.get('injector');
 
-    registerModel(bouy, 'bouy');
-    registerModel(leg, 'leg');
-    registerModel(ship, 'ship');
+    injector.inject(function (UserController) {
 
-    app.use('/api/v1', baucis());
+        // Connect to the Mongo instance
+        mongoose.connect('mongodb://localhost/24uzr');
 
-    console.info('serving /api/v1');
+        function middleware(req, res, next) {
+            console.log('auth', typeof req.method);
+            var auth = {
+                head: UserController.requiresLogin,
+                get: UserController.requiresLogin,
+                post: UserController.requiresRole('admin'),
+                put: UserController.requiresRole('admin'),
+                del: UserController.requiresRole('admin'),
+            };
+            auth[req.method.toLowerCase()](req, res, next);
+        }
+
+        registerModel(bouy, 'bouy', middleware);
+        registerModel(leg, 'leg', middleware);
+        registerModel(ship, 'ship', middleware);
+
+        app.use(API_BASE, baucis({
+            version: 1
+        }));
+
+        console.info('serving ' + API_BASE);
+    });
 };
