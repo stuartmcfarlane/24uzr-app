@@ -1,7 +1,12 @@
 {
-  "User": [{
-      "username": "stuart",
-      "password": "21640a24903311d0490dcf1471636bb25ce982d2",
-      "email": "stuart@mcfarlane.nl"
+    "User": [{
+        "id": 1,
+        "username": "stuart",
+        "password": "21640a24903311d0490dcf1471636bb25ce982d2",
+        "email": "stuart@mcfarlane.nl"
+     }],
+    "Role": [{
+        "id": 1,
+        "name": "admin"
     }]
 }

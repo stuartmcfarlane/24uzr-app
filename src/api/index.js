@@ -22,8 +22,6 @@ module.exports = function(app) {
         baucis
         .rest(name)
         .use(middleware);
-
-        console.log('middleware', middleware);
     }
 
     var injector = app.get('injector');
@@ -34,7 +32,6 @@ module.exports = function(app) {
         mongoose.connect('mongodb://localhost/24uzr');
 
         function middleware(req, res, next) {
-            console.log('auth', typeof req.method);
             var auth = {
                 head: UserController.requiresLogin,
                 get: UserController.requiresLogin,

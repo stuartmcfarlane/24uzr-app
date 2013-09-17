@@ -27,8 +27,8 @@ Object.keys(seedData).forEach(function (modelName) {
 async.forEachSeries(
 	Object.keys(seedData),
 	function forEachModelType(modelName, cb) {
-		var ModelType = models[modelName]
-		  , Models = seedData[modelName];
+		var ModelType = models[modelName];
+		var Models = seedData[modelName];
 
 		async.forEach(
 			Models,
@@ -38,12 +38,12 @@ async.forEachSeries(
 					assocMap[modelName].push(model);
 
 					if (data.associations !== undefined) {
-						var assocLength = Object.keys(data.associations).length,
-							called = 0;
+						var assocLength = Object.keys(data.associations).length;
+						var called = 0;
 
 						Object.keys(data.associations).forEach(function(assocModelName) {
-							var required = data.associations[assocModelName]
-							  , associations = [];
+							var required = data.associations[assocModelName];
+							var associations = [];
 
 							assocMap[assocModelName].forEach(function(m) {
 								var isMatched = null;

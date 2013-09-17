@@ -39,9 +39,10 @@ module.exports = function(UserService) {
         requiresRole: function(roleName) {
             return function(req, res, next) {
                 console.log('has role ' + roleName + '?');
+                console.log('roles', req.user.roles);
                 if (!req.isAuthenticated() ||
-                    !req.session.user.roles ||
-                    req.session.user.roles.indexOf(roleName) === -1)
+                    !req.user.roles ||
+                    req.user.roles.indexOf(roleName) === -1)
                     return res.send(401);
                 next();
             };
