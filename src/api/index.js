@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var baucis = require('baucis');
+var logger = require('../utils/logger');
 var bouy = require('./models/bouy');
 var leg = require('./models/leg');
 var ship = require('./models/ship');
@@ -15,10 +16,10 @@ module.exports = function(app) {
         mongoose.model(name, Model);
         // Create the API routes
         Model.pre('save', function (next) {
-            console.log('A ' + model + ' was saved to Mongo: %s.', this.get('name'));
+            logger('d', 'A ' + model + ' was saved to Mongo: %s.', this.get('name'));
             next();
         });
-        console.info('Adding REST api for ' + name);
+        logger('d' ,'Adding REST api for ' + name);
         baucis
         .rest(name)
         .use(middleware);
@@ -37,7 +38,7 @@ module.exports = function(app) {
                 get: UserController.requiresLogin,
                 post: UserController.requiresRole('admin'),
                 put: UserController.requiresRole('admin'),
-                del: UserController.requiresRole('admin'),
+                delete: UserController.requiresRole('admin'),
             };
             auth[req.method.toLowerCase()](req, res, next);
         }
@@ -50,6 +51,6 @@ module.exports = function(app) {
             version: 1
         }));
 
-        console.info('serving ' + API_BASE);
+        logger('d', 'serving ' + API_BASE);
     });
 };

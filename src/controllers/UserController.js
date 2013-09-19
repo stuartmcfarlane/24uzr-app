@@ -1,6 +1,6 @@
-var crypto = require('crypto')
-, passport = require('passport')
-, LocalStrategy = require('passport-local').Strategy;
+var crypto = require('crypto');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function(UserService) {
 
@@ -30,7 +30,6 @@ module.exports = function(UserService) {
         service: UserService,
 
         requiresLogin: function(req, res, next) {
-            console.log('logged in?');
             if (!req.isAuthenticated())
                 return res.send(401);
             next();
@@ -38,11 +37,8 @@ module.exports = function(UserService) {
 
         requiresRole: function(roleName) {
             return function(req, res, next) {
-                console.log('has role ' + roleName + '?');
-                console.log('roles', req.user.roles);
                 if (!req.isAuthenticated() ||
-                    !req.user.roles ||
-                    req.user.roles.indexOf(roleName) === -1)
+                    !UserService.hasRole(req.user, roleName))
                     return res.send(401);
                 next();
             };

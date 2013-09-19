@@ -10,16 +10,21 @@ var Sequelize = require( 'sequelize' );
 var Injector = require( './src/utils/injector' );
 var passport = require( 'passport' );
 var app = express();
+var util = require('util');
+var logger = require('./src/utils/logger');
 
 var RedisStore = require( 'connect-redis' )( express );
 
 // Setup ORM
+var dbOptions = util._extend({
+  logging: logger.bind(null, 'd')
+}, config.db.options);
+
 var sequelize = new Sequelize(
   config.db.database,
   config.db.username,
   config.db.password,
-  config.db.options
-  );
+  dbOptions);
 
 // Get our models
 // Note from richard: We have to do this for now, otherwise we cannot access other models inside a model
@@ -89,7 +94,7 @@ app.configure( function() {
     // error handler, outputs json since that's usually
     // what comes out of this thing
     app.use(function( err, req, res, next ) {
-      console.log('Express error catch', err);
+      logger('e', 'Express error catch', err);
       res.json(500, {
         error: err.toString()
       });
@@ -106,6 +111,6 @@ module.exports = app;
 
 // if (require.main == module) {
   app.listen(webPort, function() {
-    console.log("Starting server on port " + webPort + " in " + config.environmentName + " mode");
+    logger('v', 'Starting server on port ' + webPort + ' in ' + config.environmentName + ' mode');
   });
 // }
