@@ -1,7 +1,8 @@
-var Class = require('uberclass')
-  , async = require('async')
-  , MemCached = require('memcached')
-  , moment = require( 'moment' );
+var Class = require('uberclass');
+var async = require('async');
+var MemCached = require('memcached');
+var moment = require( 'moment' );
+var logger = require('../utils/logger');
 
 module.exports = Class.extend(
 {
@@ -42,7 +43,7 @@ module.exports = Class.extend(
 
         } else {
             this.holdMasterLock();
-            console.log('already scanning');
+            logger('v', 'already scanning');
         }
     },
 
@@ -52,26 +53,26 @@ module.exports = Class.extend(
 
     handleGetMasterLock: function( err, result ) {
         if ( err ) {
-            console.error( 'Unable to gets the lock from memcache. Err:' + err + ' Result:' + result );
+            logger('e', 'Unable to gets the lock from memcache. Err:' + err + ' Result:' + result );
             this.isMasterScanning = false;
         } else if ( result === false ) {
             this.memcache.add( this.masterKey, this.serverKey, 30, function( addErr, addResult ) {
                 if ( addResult && !addErr ) {
-                    console.log( 'Got master lock.' );
+                    logger('v', 'Got master lock.' );
                     this.isMaster = true;
                     this.runMasterTasks();
                 } else {
-                    console.error( 'Unable to add the lock key into memcache. Err:' + addErr + ' Result:' + addResult );
+                    logger('e', 'Unable to add the lock key into memcache. Err:' + addErr + ' Result:' + addResult );
                     this.isMasterScanning = false;
                 }
             }.bind(this));
         } else {
             if ( result && result[this.masterKey] === this.serverKey ) {
-                console.log( 'Discovered that im the master.' );
+                logger('v', 'Discovered that im the master.' );
                 this.isMaster = true;
                 this.runMasterTasks();
             } else {
-                console.log( 'There is already a master holding the lock!' );
+                logger('v', 'There is already a master holding the lock!' );
                 this.isMasterScanning = false;
             }
         }
@@ -83,9 +84,9 @@ module.exports = Class.extend(
                 if ( !err && result && result.cas ) {
                     this.memcache.cas( this.masterKey, this.serverKey, result.cas, 30, function( casErr, casResult ) {
                         if ( casErr ) {
-                            console.log( 'Cannot hold onto master lock.' );
+                            logger('v', 'Cannot hold onto master lock.' );
                         } else {
-                            console.log( 'Held onto master lock.');
+                            logger('v', 'Held onto master lock.');
                         }
                     }.bind( this ));
                 }
@@ -97,7 +98,7 @@ module.exports = Class.extend(
     runMasterTasks: function() {
         this.holdMasterLock();
 
-        console.log( 'Run master tasks.' );
+        logger('v', 'Run master tasks.' );
         async.parallel(
             [
                 // this.proxy( 'sendNotifications' ),
@@ -111,7 +112,7 @@ module.exports = Class.extend(
     },
 
     runMasterTasksComplete: function( err ) {
-        console.log( 'runMasterTasksComplete ', err ? err : 'without error' );
+        logger('v', 'runMasterTasksComplete ', err ? err : 'without error' );
         if ( err ) {
             console.dir(err.stack);
         }
